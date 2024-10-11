@@ -1,55 +1,87 @@
-{% extends 'base.html' %}
-{% block body %}
-<ul class="nav justify-content-center" style="padding-top: 1em;">
+{% extends 'base.html' %} {% block body %}
+<ul class="nav justify-content-center" style="padding-top: 1em">
   <li class="nav-item">
     <a class="btn btn-primary" href="{{ url_for('notes_create') }}">Create</a>
   </li>
-  <!-- <li class="nav-item">
-    <a class="btn btn-success" href="{{ url_for('notes_create') }}">All Tags</a>
-  </li> -->
+  <li class="nav-item">
+    <a class="btn btn-success" href="{{ url_for('all_tags') }}">All Tags</a>
+  </li>
 </ul>
 {% for note in notes %}
 <div class="card my-3">
   <div class="card-body">
     <h4 class="card-title">{{ note.title }}</h4>
-    <div class="card-text my-3">
-      {{ note.description }}
-    </div>
+    <div class="card-text my-3">{{ note.description }}</div>
     <div class="card-footer text-muted">
-      Tags: 
-      {% for t in note.tags %}
-        <a href="{{ url_for('tags_view', tag_name=t.name) }}">{{ t.name }}</a>
-    {% endfor %}
-      <br>
+      Tags: {% for t in note.tags %}
+      <a href="{{ url_for('tags_view', tag_name=t.name) }}">{{ t.name }}</a>
+      {% endfor %}
+      <br />
       Last update: {{ note.updated_date }}
     </div>
-    <a class="btn btn-secondary" href="{{ url_for('note_edit', note_id=note.id) }}">Edit note</a>
-     <!-- Form เพื่อลบโน้ต -->
-     <form id="deleteForm{{ note.id }}" action="{{ url_for('note_delete', note_id=note.id) }}" method="POST" style="display:inline;">
-      <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{ note.id }}">Delete</button>
+    <a
+      class="btn btn-secondary"
+      href="{{ url_for('note_edit', note_id=note.id) }}"
+      >Edit note</a
+    >
+    <!-- Form เพื่อลบโน้ต -->
+    <form
+      id="deleteForm{{ note.id }}"
+      action="{{ url_for('note_delete', note_id=note.id) }}"
+      method="POST"
+      style="display: inline"
+    >
+      <button
+        type="button"
+        class="btn btn-danger"
+        data-bs-toggle="modal"
+        data-bs-target="#exampleModal{{ note.id }}"
+      >
+        Delete
+      </button>
     </form>
 
     <!-- Modal ยืนยันการลบ-->
-    <div class="modal fade" id="exampleModal{{ note.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div
+      class="modal fade"
+      id="exampleModal{{ note.id }}"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">Delete "{{ note.title }}"</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <h1 class="modal-title fs-5" id="exampleModalLabel">
+              Delete "{{ note.title }}"
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
-          <div class="modal-body">
-            Are you sure to remove this note?
-          </div>
+          <div class="modal-body">Are you sure to remove this note?</div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-danger" onclick="document.getElementById('deleteForm{{ note.id }}').submit();">Delete</button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              onclick="document.getElementById('deleteForm{{ note.id }}').submit();"
+            >
+              Delete
+            </button>
           </div>
         </div>
       </div>
     </div>
-
   </div>
 </div>
-{% endfor %}
-{% endblock %}
-
+{% endfor %} {% endblock %}

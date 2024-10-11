@@ -128,6 +128,29 @@ def note_delete(note_id):
         db.session.commit() 
     return flask.redirect(flask.url_for("index"))  # ทำงานเสร็จก็กลับไปหน้าแรก
 
+@app.route("/tags/all")
+def all_tags():
+    db = models.db
+    tags = db.session.execute(db.select(models.Tag)).scalars().all()
+    return flask.render_template("all-tag.html", tags=tags)
+
+@app.route("/tags/delete/<int:tag_id>", methods=["POST"])
+def delete_tag(tag_id):
+    db = models.db
+    tag = db.session.get(models.Tag, tag_id)
+    
+    # ถ้า tag กำลังเชื่อมกับ note อยู่ ก็ลบการเชื่อมระหว่างแท็กกับโน้ตนั้นก่อน
+    notes = db.session.execute(
+        db.select(models.Note).where(models.Note.tags.any(id=tag.id))
+    ).scalars().all()
+
+    for note in notes:
+        note.tags.remove(tag)
+    
+    # ไม่ได้เชื่อมแล้วก็ลบได้เลย
+    db.session.delete(tag)
+    db.session.commit()
+    return flask.redirect(flask.url_for("all_tags"))
 
 if __name__ == "__main__":
     app.run(debug=True)
