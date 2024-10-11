@@ -1,0 +1,18 @@
+{% extends 'base.html' %} {% block body %}
+<h3 class="my-2">Edit Tag</h3>
+<form action="" method="POST">
+  <div class="form-group my-3">
+    <label for="tag_name">Tag Name</label>
+    <input
+      type="text"
+      name="tag_name"
+      value="{{ tag.name }}"
+      class="form-control"
+      required
+    />
+  </div>
+  <button type="submit" class="btn btn-primary">Save Change</button>
+  <a href="{{ url_for('all_tags') }}" class="btn btn-secondary">Cancel</a>
+</form>
+
+{% endblock %}

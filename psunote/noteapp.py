@@ -152,6 +152,20 @@ def delete_tag(tag_id):
     db.session.commit()
     return flask.redirect(flask.url_for("all_tags"))
 
+@app.route("/tags/edit/<int:tag_id>", methods=["GET", "POST"])
+def edit_tag(tag_id):
+    db = models.db
+    tag = db.session.get(models.Tag, tag_id)
+
+    if request.method == "POST":
+        new_name_tag = request.form.get("tag_name")
+        if new_name_tag:
+            tag.name = new_name_tag
+            db.session.commit()
+            return flask.redirect(flask.url_for("all_tags"))
+
+    return flask.render_template("edit-tag.html", tag=tag)
+
 if __name__ == "__main__":
     app.run(debug=True)
 
